@@ -1,7 +1,7 @@
-import { Request } from 'express'
+import {Request} from 'express';
 
 export interface TelegramOptions {
-  // An unique token which you can get from @BotFather
+  // A unique token which you can get from @BotFather
   botToken: string
   // Max seconds expiration. Default is 86400
   queryExpiration?: number

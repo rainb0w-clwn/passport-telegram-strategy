@@ -1,4 +1,4 @@
-import { PassportTelegramUser, TelegramUser } from './types'
+import {PassportTelegramUser, TelegramUser} from './types';
 
 export function normalizeProfile(profile: TelegramUser): PassportTelegramUser {
   const normalizedProfile: PassportTelegramUser = {
@@ -9,8 +9,8 @@ export function normalizeProfile(profile: TelegramUser): PassportTelegramUser {
       givenName: profile.first_name,
       familyName: profile.last_name,
     },
-    photos: profile.photo_url ? [{ value: profile.photo_url }] : [],
-  }
+    photos: profile.photo_url ? [{value: profile.photo_url}] : [],
+  };
 
-  return normalizedProfile
+  return normalizedProfile;
 }

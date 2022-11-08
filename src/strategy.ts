@@ -1,15 +1,18 @@
-import * as crypto                         from 'crypto'
-import { Request }                         from 'express'
-import { Strategy }                        from 'passport-strategy'
+import {Request} from 'express';
+import {Strategy} from 'passport-strategy';
 
-import deferPromise                        from './deferPromise'
-import { normalizeProfile }                from './normalizeProfile'
-import { TelegramOptions, VerifyCallback } from './types'
+import * as crypto from 'crypto';
+
+import deferPromise from './deferPromise';
+import {normalizeProfile} from './normalizeProfile';
+import {TelegramOptions, VerifyCallback} from './types';
+
+type WithRequired<T, K extends keyof T> = Required<Pick<T, K>> & Exclude<T, K>
 
 export const defaultOptions = {
   queryExpiration: 86400,
   passReqToCallback: false,
-}
+};
 
 export const whitelistParams = [
   'id',
@@ -18,7 +21,7 @@ export const whitelistParams = [
   'username',
   'photo_url',
   'auth_date',
-]
+];
 
 /**
  * `TelegramStrategy` constructor.
@@ -44,111 +47,110 @@ export const whitelistParams = [
 export default class TelegramStrategy extends Strategy {
   readonly name: string = 'telegram'
 
-  readonly options: TelegramOptions
+  readonly options: WithRequired<TelegramOptions, 'queryExpiration' | 'passReqToCallback'>
 
-  protected readonly verify
+  protected readonly verify: any
 
   protected readonly hashedBotToken: Buffer
 
   constructor(options: TelegramOptions, verify: VerifyCallback) {
-    super()
+    super();
 
     if (!options.botToken) {
-      throw new TypeError('options.botToken is required in TelegramStrategy')
+      throw new TypeError('options.botToken is required in TelegramStrategy');
     }
     if (!verify) {
-      throw new TypeError('LocalStrategy requires a verify callback')
+      throw new TypeError('LocalStrategy requires a verify callback');
     }
 
     this.options = {
       ...defaultOptions,
       ...options,
-    }
+    };
 
-    this.verify = verify
-    this.hashedBotToken = this.getBotToken()
+    this.verify = verify;
+    this.hashedBotToken = this.getBotToken();
   }
 
-  // eslint-disable-next-line consistent-return
   authenticate(req: Request, options?: any) {
-    const query = req.method === 'GET' ? req.query : req.body
+    const query = req.method === 'GET' ? req.query : req.body;
 
     try {
-      const validationResult = this.validateQuery(req)
+      const validationResult = this.validateQuery(req);
       if (validationResult !== true) {
-        return validationResult
+        return validationResult;
       }
 
-      const profile = normalizeProfile(query)
-      const promise = deferPromise()
+      const profile = normalizeProfile(query);
+      const promise = deferPromise<[any, any]>();
 
       if (this.options.passReqToCallback) {
-        this.verify(req, profile, promise.callback)
+        this.verify(req, profile, promise.callback);
       } else {
-        this.verify(profile, promise.callback)
+        this.verify(profile, promise.callback);
       }
 
       promise
         .then(([user, info]) => {
           if (!user) {
-            return this.fail(info)
+            return this.fail(info);
           }
 
-          return this.success(user, info)
+          return this.success(user, info);
         })
-        .catch(err => {
-          return this.error(err)
-        })
-    } catch (e) {
-      return this.error(e)
+        .catch((err): any => {
+          return this.error(err);
+        });
+    } catch (e: any) {
+      return this.error(e);
     }
   }
 
   /**
-   * Function to check if provided date in callback is outdated
-   * @returns {number}
-   */
+     * Function to check if provided date in callback is outdated
+     * @returns {number}
+     */
   protected getTimestamp(): number {
-    return Math.floor(Date.now() / 1000)
+    return Math.floor(Date.now() / 1000);
   }
 
   // We have to hash botToken too
   protected getBotToken(): Buffer {
-    return crypto.createHash('sha256').update(this.options.botToken).digest()
+    return crypto.createHash('sha256').update(this.options.botToken).digest();
   }
 
   /**
-   * Used to validate if fields like telegram must send are exists
-   * @param {e.Request} req
-   * @returns {any}
-   */
+     * Used to validate if fields like telegram must send are exists
+     * @param {e.Request} req
+     * @returns {any}
+     */
   validateQuery(req: Request): boolean | void {
-    const query = req.method === 'GET' ? req.query : req.body
+    const query = req.method === 'GET' ? req.query : req.body;
 
     if (!query.auth_date || !query.hash || !query.id) {
-      return this.fail({ message: 'Missing some important data' }, 400)
+      return this.fail({message: 'Missing some important data'}, 400);
     }
 
-    const authDate = Math.floor(Number(query.auth_date))
+    const authDate = Math.floor(Number(query.auth_date));
     if (
       this.options.queryExpiration !== -1 &&
-      (Number.isNaN(authDate) || this.getTimestamp() - authDate > this.options.queryExpiration)
+            (Number.isNaN(authDate) || this.getTimestamp() - authDate > this.options.queryExpiration)
     ) {
-      return this.fail({ message: 'Data is outdated' }, 400)
+      return this.fail({message: 'Data is outdated'}, 400);
     }
 
-    const sorted = Object.keys(query).sort()
+    const sorted = Object.keys(query).sort();
     const mapped = sorted // Only whitelisted query parameters must be mapped
       .filter(d => whitelistParams.includes(d))
-      .map(key => `${key}=${query[key]}`)
+      .map(key => `${key}=${query[key]}`);
 
-    const hashString = mapped.join('\n')
-    const hash = crypto.createHmac('sha256', this.hashedBotToken).update(hashString).digest('hex')
+    const hashString = mapped.join('\n');
+    const hash = crypto.createHmac('sha256', this.hashedBotToken).update(hashString).digest('hex');
 
     if (hash !== query.hash) {
-      return this.fail({ message: 'Hash validation failed' }, 403)
+      return this.fail({message: 'Hash validation failed'}, 403);
     }
 
-    return true
+    return true;
   }
 }

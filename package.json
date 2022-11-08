@@ -1,16 +1,21 @@
 {
-  "name": "passport-telegram-official",
+  "name": "@rainb0w-clwn/passport-telegram-official",
   "version": "2.0.1",
-  "description": "Telegram (not official, just the name) authentication strategy for Passport (https://core.telegram.org/widgets/login)",
+  "description": "[UPDATED] Telegram (not official, just the name) authentication strategy for Passport (https://core.telegram.org/widgets/login)",
   "main": "dist/index.js",
-  "umd:main": "dist/index.umd.js",
-  "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "microbundle --target node",
-    "prepublish": "npm run build",
-    "lint": "eslint --fix src/**/*.ts",
-    "test": "jest"
+    "prebuild": "rimraf dist",
+    "build": "npx tsc -p tsconfig.build.json",
+    "check": "npm run lint:check",
+    "lint": "eslint --cache --max-warnings 0 --fix 'src/**/*.{ts,mts,js}'",
+    "lint:check": "eslint --cache --max-warnings 0 'src/**/*.{ts,mts,js}'"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">= 14.18.1"
   },
   "keywords": [
     "passport",
@@ -21,9 +26,18 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Blitss/passport-telegram-official.git"
+    "url": "git+https://github.com/rainb0w-clwn/passport-telegram-official.git"
   },
-  "author": "Andrey Vasilev",
+  "author": {
+    "name": "Andrey Vasilev",
+    "url": "https://github.com/Blitss"
+  },
+  "contributors": [
+    {
+      "name": "rainb0w-clwn",
+      "url": "https://github.com/rainb0w-clwn"
+    }
+  ],
   "license": "MIT",
   "licenses": [
     {
@@ -32,29 +46,29 @@
     }
   ],
   "bugs": {
-    "url": "https://github.com/Blitss/passport-telegram-official/issues"
+    "url": "https://github.com/rainb0w-clwn/passport-telegram-official/issues"
   },
   "release": {
     "branch": "master"
   },
-  "homepage": "https://github.com/Blitss/passport-telegram-official#readme",
+  "homepage": "https://github.com/rainb0w-clwn/passport-telegram-official#readme",
   "dependencies": {
+    "express": "^4.18.2",
     "passport-strategy": "^1.0.0"
   },
   "devDependencies": {
-    "@types/express": "^4.17.13",
-    "@types/express-serve-static-core": "^4.17.24",
-    "@types/lodash": "^4.14.172",
+    "@types/express": "^4.17.14",
+    "@types/express-serve-static-core": "^4.17.31",
+    "@types/lodash": "^4.14.188",
     "@types/passport-strategy": "^0.2.35",
-    "@ythub/eslint-config": "^1.1.0",
-    "body-parser": "^1.19.0",
+    "body-parser": "^1.20.1",
     "eslint": "^7.32.0",
-    "express": "^4.17.1",
-    "microbundle": "^0.13.3",
-    "typescript": "^4.4.3"
-  },
-  "peerDependencies": {
-    "express": "*",
-    "passport": "^0.4.1"
+    "typescript": "^4.4.3",
+    "passport": "^0.6.0",
+    "@typescript-eslint/eslint-plugin": "5.40.1",
+    "@typescript-eslint/parser": "5.40.1",
+    "babel-jest": "29.2.1",
+    "eslint-import-resolver-typescript": "3.5.2",
+    "eslint-plugin-import": "2.26.0"
   }
 }

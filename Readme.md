@@ -1,10 +1,6 @@
+# [FORKED AND UPDATED VERSION]
+
 # passport-telegram-official
-
-[![Build](https://img.shields.io/travis/Blitss/passport-telegram-official.svg)](https://travis-ci.org/Blitss/passport-telegram-official)
-[![Coverage](https://img.shields.io/coveralls/Blitss/passport-telegram-official.svg)](https://coveralls.io/r/Blitss/passport-telegram-official)
-[![Quality](https://img.shields.io/codeclimate/github/Blitss/passport-telegram-official.svg?label=quality)](https://codeclimate.com/github/Blitss/passport-telegram-official)
-[![Dependencies](https://img.shields.io/david/Blitss/passport-telegram-official.svg)](https://david-dm.org/Blitss/passport-telegram-official)
-
 
 [Passport](http://passportjs.org/) strategy for authenticating with [Telegram](https://core.telegram.org/widgets/login)
 using their Widget.
@@ -71,10 +67,6 @@ Generate widget [here](https://core.telegram.org/widgets/login) and paste code o
 
 Start a server from `example` folder and go to home page. Note it won't work on `localhost`.
 
-## FAQ
-
-## Contributing
-
 #### Tests
 
 Isn't done yet.
@@ -86,3 +78,8 @@ $ make test
 ## License
 
 [The MIT License](http://opensource.org/licenses/MIT)
+
+## Credits
+
+Based on:
+* https://github.com/Blitss/passport-telegram-official
