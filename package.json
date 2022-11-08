@@ -28,15 +28,9 @@
     "type": "git",
     "url": "git+https://github.com/rainb0w-clwn/passport-telegram-official.git"
   },
-  "author": {
-    "name": "Andrey Vasilev",
-    "url": "https://github.com/Blitss"
-  },
+  "author": "Andrey Vasilev (https://github.com/Blitss)",
   "contributors": [
-    {
-      "name": "rainb0w-clwn",
-      "url": "https://github.com/rainb0w-clwn"
-    }
+    "rainb0w-clwn (https://github.com/rainb0w-clwn)"
   ],
   "license": "MIT",
   "licenses": [
@@ -70,5 +64,8 @@
     "babel-jest": "29.2.1",
     "eslint-import-resolver-typescript": "3.5.2",
     "eslint-plugin-import": "2.26.0"
+  },
+  "directories": {
+    "example": "example"
   }
 }

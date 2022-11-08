@@ -72,7 +72,7 @@ export default class TelegramStrategy extends Strategy {
     this.hashedBotToken = this.getBotToken();
   }
 
-  authenticate(req: Request, options?: any) {
+  authenticate(req: Request) {
     const query = req.method === 'GET' ? req.query : req.body;
 
     try {
