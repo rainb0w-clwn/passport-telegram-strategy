@@ -47,7 +47,7 @@
   },
   "homepage": "https://github.com/rainb0w-clwn/passport-telegram-official#readme",
   "dependencies": {
-    "express": "^4.18.2",
+    "express": "^5.0.0",
     "passport-strategy": "^1.0.0"
   },
   "devDependencies": {
